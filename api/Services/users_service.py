@@ -17,7 +17,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/token")
 
 def get_db():
     db = SessionLocal()
@@ -37,9 +37,9 @@ def get_password_hash(password):
 
 def authenticate_user(db, username: str, password: str):
     user = get_user_by_email(username, db)
-
     if not user:
         return False
+
     if not verify_password(password, user.user_password):
         return False
     return user
@@ -57,7 +57,7 @@ async def get_current_user(
 ):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        user = db.query(models.Users).get(payload["user_id"])
+        user = db.query(models.User).get(payload["user_id"])
     except:
         raise HTTPException(
             status_code=401, detail="Invalid Email or Password"
@@ -66,10 +66,17 @@ async def get_current_user(
 
 
 def get_user_by_email(email: str, db: orm.Session):
-    return db.query(models.Users).filter(models.Users.uesr_email == email).first()
+    return db.query(models.User).filter(models.User.uesr_email == email).first()
+
+async def get_all_users_db(db: orm.Session):
+    return db.query(models.User).all()
+
+async def get_user_by_id_db(db: orm.Session, user_id: int):
+    return db.query(models.User).get(user_id)
+
 
 async def create_user_db(user: UserCreate, db: orm.Session):
-    user_obj = models.Users(
+    user_obj = models.User(
         user_login=user.username,
         uesr_email=user.email,
         user_password=get_password_hash(user.password),

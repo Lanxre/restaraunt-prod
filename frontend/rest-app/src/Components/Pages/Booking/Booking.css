@@ -1,0 +1,86 @@
+.main-booking{
+    display: flex;
+    justify-content: flex-end;
+    align-content: flex-end;
+}
+.scheme-booking{
+    margin: 5px;
+    padding: 5px;
+    flex: 0 1 auto;
+    margin-right: 10px;
+    
+}
+.scheme-booking-img{
+    width: 100%;
+    height: 100%;
+}
+.scheme-booking-img img{
+    width: 100%;
+    height: 100%;
+    
+}
+.booking-order{
+    margin-bottom:5px;
+    padding: 5px;
+    height: 671px;
+    width: 500px;
+    flex: 0 1 auto;
+    background-color: white;
+    border: 1px solid black;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+.booking-order-content{
+    margin: 5px;
+    padding: 5px;
+    flex: 0 1 auto;
+    align-self: center;
+    width: 100%;
+    border-bottom: 1px solid black; 
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+}
+
+.booking-order-info{
+    margin: 5px;
+    padding: 5px;
+    flex: 0 1;
+    align-self: center;
+}
+.booking-order-info img{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.booking-order-content-title{
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 300px;
+    display: flex;
+    font-size: 24px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+}
+.booking-make-order{
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    font-size: 48px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    cursor: pointer;
+}
+.booking-make-order:hover{
+    color: orange;
+}

@@ -1,8 +1,7 @@
 import React, { useState, useContext } from "react";
 import './Login.css'
-
 import {UserContext, UserProvider} from "../../Api/Context/UserContext";
-
+import { toast } from 'wc-toast'
 
 export default function LoginWrapper(){
     return (
@@ -19,7 +18,7 @@ function Login() {
     const [password, setPassword] = useState("");
     const [token, setToken] = useContext(UserContext);
 
-    const submitLogin = async () => {
+    const submitLogin = async () => {   
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -32,10 +31,17 @@ function Login() {
         const data = await response.json();
 
         if (!response.ok) {
+            toast.error(`Authentication failed: ${data.detail}`); 
             console.log(data.detail)
+            
         } else {
+            toast.success('Authentication success'); 
             setToken(data.access_token);
-            window.location.replace('/profile')
+            setTimeout(() => {
+                window.location.replace('/profile')
+            }
+            , 1000);
+
         }
     };
 
@@ -57,7 +63,9 @@ function Login() {
 
         if (!response.ok) {
             console.log(data.detail)
+            toast.error(`Register failed: ${data.detail}`); 
         } else {
+            toast.success('Register success');
             setToken(data.access_token);
             window.location.replace('/profile')
         }
@@ -67,21 +75,22 @@ function Login() {
         e.preventDefault();
         submitRegistration();
 
-    };
+        
 
+    };
     return (
         <div className="all_body">
+                <wc-toast></wc-toast>
                 <div className="main">
                     <input type="checkbox" id="chk" aria-hidden="true"/>
-
                     <div className="signup">
                         <form onSubmit={handleRegisterSubmit}>
                             <label htmlFor="chk" aria-hidden="true">Sign up</label>
                             <input type="text" name="txt" placeholder="User name" required=""
                                    onChange={(e) => setUsername(e.target.value)}/>
-                            <input type="email" name="email" placeholder="Email" required="" value={email}
+                            <input type="email" name="email" placeholder="Email" required=""
                                    onChange={(e) => setEmail(e.target.value)}/>
-                            <input type="password" name="pswd" placeholder="Password" required="" value={password}
+                            <input type="password" name="pswd" placeholder="Password" required=""
                                    onChange={(e) => setPassword(e.target.value)}/>
                             <button type="submit">Sign up</button>
                         </form>
@@ -90,9 +99,9 @@ function Login() {
                     <div className="login">
                         <form onSubmit={handleLoginSubmit}>
                             <label htmlFor="chk" aria-hidden="true">Login</label>
-                            <input type="email" name="email" placeholder="Email" required="" value={email}
+                            <input type="email" name="email" placeholder="Email" required="" 
                                    onChange={(e) => setEmail(e.target.value)}/>
-                            <input type="password" name="pswd" placeholder="Password" required="" value={password}
+                            <input type="password" name="pswd" placeholder="Password" required=""
                                    onChange={(e) => setPassword(e.target.value)}/>
                             <button type="submit" >Login</button>
                         </form>

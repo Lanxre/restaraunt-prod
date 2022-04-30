@@ -1,0 +1,66 @@
+.notify {
+    position: absolute;
+    margin-bottom: auto;
+    left: 40%;
+    display: flex;
+    justify-content: space-around;
+    align-content: space-around;
+    width: 500px;
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 0px 5px 10px 19px rgba(34, 60, 80, 0.2);
+    z-index: 9999;
+}
+.notify-container {
+    margin: 5px;
+    padding: 5px;
+    flex: 1 1 auto;
+    align-self: center;
+    text-align: center;
+    transition: 0.7s;
+    font-family: "Arial Black", "Arial Bold", Gadget, sans-serif; 
+    font-size: 10px;
+    color: black;
+    
+}
+
+.notify-answers{
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    height: 100px;
+}
+.notify-answer-true{
+    margin: 10px;
+    padding: 5px;
+    flex: 1 1 auto;
+    align-self: center;
+    font-size: 30px;
+    border: 1px solid lightgreen;
+    color: lightgreen;
+    box-shadow: 0px 5px 10px 2px lightgreen;
+    text-shadow: 0 1px 0 #878686, 0 2px 0 #878686, 0 3px 0 #878686, 0 4px 0 #878686, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+    transition: 0.7s;
+}
+.notify-answer-true:hover{
+    cursor: pointer;
+    background-color: lightgreen;
+}
+
+.notify-answer-false{
+    margin: 10px;
+    padding: 5px;
+    flex: 1 1 auto;
+    align-self: center;
+    font-size: 30px;
+    border: 1px solid red;
+    color: red;
+    box-shadow: 0px 5px 10px 2px red;
+    text-shadow: 0 1px 0 #807e7e, 0 2px 0 #807e7e, 0 3px 0 #807e7e, 0 4px 0 #807e7e, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+    transition: 0.7s;
+}
+
+.notify-answer-false:hover{
+    cursor: pointer;
+    background-color: red;
+}

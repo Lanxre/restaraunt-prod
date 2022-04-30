@@ -1,9 +1,7 @@
 import React, {useState, useContext, useEffect} from "react";
 import {UserContext, UserProvider} from "../../Api/Context/UserContext";
+import { toast } from 'wc-toast'
 import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
     Navigate,
 } from 'react-router-dom';
 import './ProfilePage.css'
@@ -86,6 +84,9 @@ function ProfilePage() {
                             <button style={{display: readonly ? 'block' : 'none'  }}>Ваши заказы</button>
                             <button style={{display: readonly ? 'block' : 'none'  }}>Отзыв</button>
                             <button onClick={ () => {
+                                setTimeout(() => {
+                                    toast('Вы вышли из аккаунта!', { closeable: true });
+                                }, 100)
                                 localStorage.removeItem('Token')
                                 setToken(null)
                             }} style={{display: readonly ? 'block' : 'none'  }}>Выйти из аккаунта</button>

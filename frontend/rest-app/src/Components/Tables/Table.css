@@ -1,0 +1,123 @@
+
+
+
+.tbl-header table{
+    width:100%;
+    table-layout: fixed;
+}
+.tbl-content table{
+    width:100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0px;
+}
+.tbl-header{
+    background-color: rgba(255,255,255,0.3);
+}
+.tbl-content{
+    height: 100%;
+    overflow-x:auto;
+    margin-top: 0px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.tbl-header th{
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 25px;
+    color:black ;
+    text-transform: uppercase;
+}
+.tbl-header td{
+    padding: 15px;
+    text-align: left;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 25px;
+    color: black;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+.tbl-content td{
+    padding: 15px;
+    text-align: left;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 25px;
+    color: black;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+    
+}
+.tbl-content tr{
+    background: linear-gradient(to left, rgba(242,167,54,1) 50%, rgba(255,255,255,0.3) 50%) right;
+    background-size: 200%;
+    transition: .7s ease-out;
+}
+/* hover animate */
+.tbl-content tr:hover{
+    background-position: left;
+}
+
+.tbl-content th{
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 25px;
+    color: black;
+    text-transform: uppercase;
+}
+
+.icons{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 100px;
+}
+
+.updateIcon{
+    flex: 0 1 auto;
+    align-self: center;
+    display: flex;
+    height: 30px;
+    width: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.deleteIcon{
+    flex: 0 1 auto;
+    align-self: center;
+    display: flex;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: auto;
+    cursor: pointer;
+}
+
+.create-object div{
+    height: 50px;
+    text-align: center;
+    align-items: center;
+    font-size: 34px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background: linear-gradient(to left, rgb(212, 95, 6) 50%, rgba(109, 103, 103, 0.3) 50%) right;
+    background-size: 200%;
+    transition: .9s ease-out;
+}
+.create-object div:hover{
+    background-position: left;
+    color: rgb(232, 138, 7);
+    cursor: pointer;
+}
+
+
+
+::-webkit-scrollbar {
+    width: 6px;
+    
+} 
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+} 
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}

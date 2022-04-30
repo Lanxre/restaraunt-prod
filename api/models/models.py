@@ -1,65 +1,76 @@
 import sqlalchemy.types
-from sqlalchemy import Integer, ForeignKey, String, Column, Boolean
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Table, text
+from sqlalchemy.sql.sqltypes import NullType
 from sqlalchemy.orm import relationship
-
-from api.database.mongodb import MongoBase
+from sqlalchemy.ext.declarative import declarative_base
+# from api.database.mongodb import MongoBase
 
 
 Base = declarative_base()
+metadata = Base.metadata
 
-''' ROLES AND USERS '''
+class DishType(Base):
+    __tablename__ = 'DishType'
 
-class Roles(Base):
+    id = Column(Integer, primary_key=True)
+    type_name = Column(String)
+
+
+class Menu(Base):
+    __tablename__ = 'Menu'
+
+    menu_id = Column(Integer, primary_key=True)
+    menu_name = Column(String)
+    menu_description = Column(String)
+
+
+class Role(Base):
     __tablename__ = 'Roles'
 
     role_id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     description = Column(String)
 
-    address_user = relationship('Users', back_populates='address_roles')
 
-class Users(Base):
+class Table(Base):
+    __tablename__ = 'Table'
+
+    table_id = Column(Integer, primary_key=True, index=True)
+    table_availability = Column(Boolean)
+
+
+    t_sqlite_sequence = Table(
+        'sqlite_sequence', metadata,
+        Column('name', String),
+        Column('seq', NullType)
+    )
+
+
+class Dish(Base):
+    __tablename__ = 'Dish'
+
+    id = Column(Integer, primary_key=True)
+    menu_id = Column(ForeignKey('Menu.menu_id'))
+    name = Column(String)
+    description = Column(String)
+    type = Column(ForeignKey('DishType.id'))
+    price = Column(Integer, server_default=text("1"))
+
+    menu = relationship('Menu')
+    DishType = relationship('DishType')
+
+
+class User(Base):
     __tablename__ = 'Users'
 
-    user_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, primary_key=True)
     user_login = Column(String)
     user_password = Column(String)
     uesr_email = Column(String)
-    role_id = Column(Integer, ForeignKey('Roles.role_id'))
+    role_id = Column(ForeignKey('Roles.role_id'))
 
-    address_roles = relationship('Roles',back_populates='address_user')
-    address_saleperson = relationship('SalePerson',back_populates='address_user')
-    address_admin = relationship('Administator', back_populates='address_user')
-    address_manager = relationship('ManagerPerson', back_populates='address_user')
-    address_customer = relationship('Customer', back_populates='address_user')
+    role = relationship('Role')
 
-class SalePerson(Base):
-    __tablename__ = 'SalePerson'
-
-    id = Column(Integer, primary_key=True)
-    FirstName = Column(String)
-    LastName = Column(String)
-    Age = Column(String)
-    Email = Column(String)
-    Phone = Column(String)
-    user_id = Column(Integer, ForeignKey('Users.user_id'))
-
-    address_user = relationship('Users', back_populates='address_saleperson')
-    address_booking = relationship('Booking', back_populates='address_saleperson')
-
-class ManagerPerson(Base):
-    __tablename__ = 'ManagerPerson'
-
-    id = Column(Integer, primary_key=True)
-    FirstName = Column(String)
-    LastName = Column(String)
-    Age = Column(String)
-    Email = Column(String)
-    Phone = Column(String)
-    user_id = Column(Integer, ForeignKey('Users.user_id'))
-
-    address_user = relationship('Users', back_populates='address_manager')
 
 class Administator(Base):
     __tablename__ = 'Administator'
@@ -70,9 +81,22 @@ class Administator(Base):
     Age = Column(String)
     Email = Column(String)
     Phone = Column(String)
-    user_id = Column(Integer, ForeignKey('Users.user_id'))
+    user_id = Column(ForeignKey('Users.user_id'))
 
-    address_user = relationship('Users', back_populates='address_admin')
+    user = relationship('User')
+
+
+class Comment(Base):
+    __tablename__ = 'Comments'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(ForeignKey('Users.user_id'))
+    dish_id = Column(ForeignKey('Dish.id'))
+    comments = Column(String)
+
+    dish = relationship('Dish')
+    user = relationship('User')
+
 
 class Customer(Base):
     __tablename__ = 'Customer'
@@ -83,60 +107,62 @@ class Customer(Base):
     Age = Column(String)
     Email = Column(String)
     Phone = Column(String)
-    user_id = Column(Integer, ForeignKey('Users.user_id'))
+    user_id = Column(ForeignKey('Users.user_id'))
 
-    address_user = relationship('Users', back_populates='address_customer')
-    address_booking = relationship('Booking', back_populates='address_customer')
+    user = relationship('User')
 
-""" TABLE AND BOOKING """
-class Table(Base):
-    __tablename__ = 'Table'
 
-    table_id = Column(Integer, primary_key=True, index=True)
-    table_availability = Column(Boolean)
+class Ingredient(Base):
+    __tablename__ = 'Ingredients'
 
-    address_booking = relationship('Booking', back_populates='address_table')
+    id = Column(Integer, primary_key=True)
+    ingredient_name = Column(String)
+    ingredient_count = Column(Integer, server_default=text("1"))
+    dish_id = Column(ForeignKey('Dish.id'))
+
+    dish = relationship('Dish')
+
+
+class ManagerPerson(Base):
+    __tablename__ = 'ManagerPerson'
+
+    id = Column(Integer, primary_key=True)
+    FirstName = Column(String)
+    LastName = Column(String)
+    Age = Column(String)
+    Email = Column(String)
+    Phone = Column(String)
+    user_id = Column(ForeignKey('Users.user_id'))
+
+    user = relationship('User')
+
+
+class SalePerson(Base):
+    __tablename__ = 'SalePerson'
+
+    id = Column(Integer, primary_key=True)
+    FirstName = Column(String)
+    LastName = Column(String)
+    Age = Column(String)
+    Email = Column(String)
+    Phone = Column(String)
+    user_id = Column(ForeignKey('Users.user_id'))
+
+    user = relationship('User')
+
 
 class Booking(Base):
     __tablename__ = 'Booking'
 
     booking_id = Column(Integer, primary_key=True, index=True)
-    table_id = Column(Integer, ForeignKey('Table.table_id'))
-    customer_id = Column(Integer, ForeignKey('Customer.customer_id'))
-    saleperson_id =  Column(Integer, ForeignKey('SalePerson.id'))
+    table_id = Column(ForeignKey('Table.table_id'))
+    customer_id = Column(ForeignKey('Customer.customer_id'))
+    saleperson_id = Column(ForeignKey('SalePerson.id'))
 
-    address_table = relationship('Table', back_populates='address_booking')
-    address_customer = relationship('Customer', back_populates='address_booking')
-    address_saleperson = relationship('SalePerson', back_populates='address_booking')
+    customer = relationship('Customer')
+    saleperson = relationship('SalePerson')
+    table = relationship('Table')
 
-
-class Menu(MongoBase):
-    menu_type: str
-    dishes: list
-
-    @property
-    def get_collections(self):
-        return super(Menu, self).db['menu']
-
-class Order(MongoBase):
-    date: str
-    customer: dict
-    manager : dict
-    costs: float
-
-    @property
-    def get_collections(self):
-        return super(Order, self).db['order']
-
-
-class Comments(MongoBase):
-    date: str
-    customer: dict
-    comment: str
-
-    @property
-    def get_collections(self):
-        return super(Comments, self).db['comments']
 
 
 
