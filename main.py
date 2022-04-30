@@ -116,8 +116,6 @@ async def update_user(
 #                      db: orm.Session = Depends(get_db)):
 #
 #     return await get_customer_db(db)
-
-
 app.include_router(router_manager, dependencies=[Depends(get_current_user)])
 app.include_router(router_customer, dependencies=[Depends(get_current_user)])
 app.include_router(router_admins, dependencies=[Depends(get_current_user)])
