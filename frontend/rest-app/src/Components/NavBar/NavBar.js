@@ -55,6 +55,19 @@ function NavBar() {
                 </NavLink>
               </li> : null
               }
+              {
+              user.role_id === Role.Manager || user.role_id === Role.Admin ? <li className="nav-item">
+                <NavLink
+                    exact
+                    to="/managment"
+                    activeClassName="active"
+                    className="nav-links"
+                    onClick={handleClick}
+                >
+                  Менеджмент
+                </NavLink>
+              </li> : null
+              }
               <li className="nav-item">
                 <NavLink
                     exact

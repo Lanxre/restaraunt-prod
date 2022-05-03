@@ -91,10 +91,10 @@ class Comment(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(ForeignKey('Users.user_id'))
-    dish_id = Column(ForeignKey('Dish.id'))
     comments = Column(String)
+    order_id = Column(ForeignKey('Orders.id'))
 
-    dish = relationship('Dish')
+    order = relationship('Order')
     user = relationship('User')
 
 
@@ -162,6 +162,54 @@ class Booking(Base):
     customer = relationship('Customer')
     saleperson = relationship('SalePerson')
     table = relationship('Table')
+
+
+class OrderDetailMenu(Base):
+    __tablename__ = 'OrderDetailMenu'
+
+    id = Column(Integer, primary_key=True)
+    order_id = Column(ForeignKey('Orders.id'))
+    dish_id = Column(ForeignKey('Dish.id'))
+    dish_type = Column(ForeignKey('DishType.id'))
+    quantity = Column(Integer, server_default=text("1"))
+    total_price = Column(Integer, server_default=text("1"))
+    user_id = Column(ForeignKey('Users.user_id'))
+    manager_id = Column(ForeignKey('ManagerPerson.id'))
+    sale_person_id = Column(ForeignKey('SalePerson.id'))
+
+    dish = relationship('Dish')
+    manager = relationship('ManagerPerson')
+    order = relationship('Order')
+    sale_person = relationship('SalePerson')
+    user = relationship('User')
+    type = relationship('DishType')
+
+
+class Order(Base):
+    __tablename__ = 'Orders'
+
+    id = Column(Integer, primary_key=True)
+    price = Column(Integer, server_default=text("1"))
+    date = Column(String)
+    status = Column(String, server_default=text("expectation"))
+
+
+class OrderDetailTable(Base):
+    __tablename__ = 'OrderDetailTables'
+
+    id = Column(Integer, primary_key=True)
+    order_id = Column(ForeignKey('Orders.id'))
+    table_id = Column(ForeignKey('Table.table_id'))
+    user_id = Column(ForeignKey('Users.user_id'))
+    manager_id = Column(ForeignKey('ManagerPerson.id'))
+    sale_person_id = Column(ForeignKey('SalePerson.id'))
+
+    manager = relationship('ManagerPerson')
+    order = relationship('Order')
+    sale_person = relationship('SalePerson')
+    table = relationship('Table')
+    user = relationship('User')
+
 
 
 

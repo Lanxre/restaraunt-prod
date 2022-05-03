@@ -6,7 +6,7 @@ from api.Services import *
 from api.routings import *
 
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, Path, Query, Header, HTTPException
+from fastapi import FastAPI, Path, Query, Header, HTTPException, Body
 
 models.Base.metadata.create_all(bind=database.engine)
 
@@ -117,10 +117,104 @@ async def update_user(
 #
 #     return await get_customer_db(db)
 
+@app.post("/api/order/table-detail", tags=["order table details"])
+async def create_table_detail(
+    data: OrderTableDetailSchemeList,
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await add_orders_details(db, data)
+
+@app.get("/api/dishes-type/", tags=["dishes type"], response_model=DishScheme)
+async def get_dishes_type(
+    dish_id: str | None = None,
+    type_id: str | None = Query(None, min_length=1, max_length=3),
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_dish_by_type(db, int(dish_id), int(type_id))
+
+@app.post("/api/order/menu-detail", tags=["order menu details"])
+async def create_menu_detail(
+    data: OrderMenuDetailSchemeList,
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await add_orders_menu_details(db, data)
+
+
+@app.get("/api/order/menu-detail-not-confirm", tags=["order menu details"])
+async def get_not_confirmed_order_detail_menu_by_user(
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_not_confirmed_order_menu_by_user_id(db, int(user.user_id))
+
+
+@app.get("/api/order/menu-detail-not-confirm-all", tags=["order menu details"])
+async def get_not_confirmed_order_detail_menu_all(
+    db: orm.Session = Depends(get_db)
+):
+    return await get_not_confirmed_order_menu(db)
+
+
+
+@app.get("/api/order/menu-detail-confirm", tags=["order menu details"])
+async def get_confirmed_order_detail_menu_by_user(
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_confirmed_order_menu_by_user_id(db, int(user.user_id))
+
+
+@app.get("/api/order/table-detail-not-confirm", tags=["order table details"])
+async def get_not_confirmed_order_table_details_by_user(
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_order_table_details_not_confirm(db, int(user.user_id))
+
+@app.get("/api/order/table-detail-not-confirm-all", tags=["order table details"])
+async def get_not_confirmed_order_table_details_by_all(
+    db: orm.Session = Depends(get_db)
+):
+    return await get_order_table_details_not_confirm_all(db)
+
+
+@app.put("/api/order/update-order", tags=["order offer"])
+async def confirm_order_offer(
+        db: orm.Session = Depends(get_db),
+        data: OrderItem = Body(...),
+        user: User = Depends(get_current_user)
+):
+    return await confirm_order(db, int(user.user_id), data)
+
+
+
+@app.get("/api/order/table-detail-confirm", tags=["order table details"])
+async def get_confirmed_order_table_details_by_user(
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_order_table_details_confirm(db, int(user.user_id))
+
+@app.get("/api/comments/user", tags=["comments"])
+async def get_comments_by_user(
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_comments_user(db, int(user.user_id))
+
+
+
+
+
 
 app.include_router(router_manager, dependencies=[Depends(get_current_user)])
 app.include_router(router_customer, dependencies=[Depends(get_current_user)])
 app.include_router(router_admins, dependencies=[Depends(get_current_user)])
 app.include_router(router_users, dependencies=[Depends(get_current_user)])
-app.include_router(router_tables, dependencies=[Depends(get_current_user)])
-app.include_router(router_dishes, dependencies=[Depends(get_current_user)])
+app.include_router(router_tables)
+app.include_router(router_dishes)
+app.include_router(router_orders, dependencies=[Depends(get_current_user)])
+app.include_router(router_comments, dependencies=[Depends(get_current_user)])

@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect} from "react";
 import {UserContext, UserProvider} from "../../Api/Context/UserContext";
 import { toast } from 'wc-toast'
 import {
-    Navigate,
+    Navigate, useNavigate
 } from 'react-router-dom';
 import './ProfilePage.css'
 
@@ -12,6 +12,8 @@ function ProfilePage() {
     const [user, setUser] = useState({})
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchUser = async () => {
             const requestOptions = {
@@ -81,8 +83,8 @@ function ProfilePage() {
 
 
                             <button onClick={redInfo}>{readonly ? 'Редактировать' : 'Отменить'} </button>
-                            <button style={{display: readonly ? 'block' : 'none'  }}>Ваши заказы</button>
-                            <button style={{display: readonly ? 'block' : 'none'  }}>Отзыв</button>
+                            <button style={{display: readonly ? 'block' : 'none'  }} onClick={() => {navigate('my-order')}}>Ваши заказы</button>
+                            <button style={{display: readonly ? 'block' : 'none'  }} onClick={() => {navigate('my-comments')}}>Отзыв</button>
                             <button onClick={ () => {
                                 setTimeout(() => {
                                     toast('Вы вышли из аккаунта!', { closeable: true });

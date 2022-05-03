@@ -5,9 +5,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-from api.Schemas import *
-from api.models import models
-from api.database.database import SessionLocal
+from ..Schemas import *
+from ..models import models
+from ..database.database import SessionLocal
 
 import sqlalchemy.orm as orm
 

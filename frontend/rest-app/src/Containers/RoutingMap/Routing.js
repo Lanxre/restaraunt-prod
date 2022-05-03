@@ -7,6 +7,11 @@ import AdminDetail from "../../Components/Pages/DynamicPage/AdministratorPage/Ad
 import AdminAdd from "../../Components/Pages/DynamicPage/AdministratorPage/AdminAdd";
 import Booking from "../../Components/Pages/Booking/Booking";
 import Menu from "../../Components/Pages/Menu/Menu";
+import Order from "../../Components/Pages/Orders/Order";
+import ProfileOrders from "../../Components/Pages/ProfileOrders/ProfileOrders";
+import ProfileComments from "../../Components/Pages/ProfileComments/ProfileComments";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import Managment from "../../Components/Pages/Managment/Managment"
 
 function Routing() {
 
@@ -26,9 +31,13 @@ function Routing() {
 
                 <Route exact path="/booking" element={<Booking/>}/>
                 <Route exact path="/menu" element={<Menu/>}/>
+                <Route exact path="/order" element={<Order/>}/>
+                <Route exact path="profile/my-order" element={<ProfileOrders/>}/>
+                <Route exact path="profile/my-comments" element={<ProfileComments/>}/>
+                <Route exact path="/managment" element={<Managment/>}/>
 
-                <Route path="/menu"/>
-                <Route path="/contact"/>
+                <Route path="/*"  element={<ErrorPage/>}/>
+                
             </Routes>
     );
 }

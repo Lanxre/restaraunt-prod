@@ -126,7 +126,7 @@ export default function Menu() {
 
   useEffect(() => {
 
-      if(token && !isLoadData){
+      if(!isLoadData){
         fetchDishes(token)
         .then(data => {
           setDbMenu(data);

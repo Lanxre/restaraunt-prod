@@ -66,3 +66,24 @@ router_dishes = SQLAlchemyCRUDRouter(
     tags=["dishes"],
     prefix='/api/dishes',
 )
+router_orders = SQLAlchemyCRUDRouter(
+    schema= OrderScheme,
+    create_schema=OrderSchemeCreate,
+    update_schema=OrderScheme,
+    delete_all_route=False,
+    db_model=models.Order,
+    db=get_db,
+    tags=["orders"],
+    prefix='/api/orders',
+)
+
+router_comments = SQLAlchemyCRUDRouter(
+    schema=CommentsScheme,
+    create_schema=CommentsScheme,
+    update_schema=CommentsSchemeUpdate,
+    delete_all_route=False,
+    db_model=models.Comment,
+    db=get_db,
+    tags=["comments"],
+    prefix='/api/comments',
+)

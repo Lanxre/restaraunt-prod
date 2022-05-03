@@ -1,0 +1,203 @@
+.manag-nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    height: 100px;
+    width: 100%;
+}
+.manag-nav-component{
+    padding: 40px;
+    flex: 0 1 500px;
+    align-self: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'PT Sans', Arial, Verdana;
+    background-color: orange;
+
+    background: linear-gradient(to left, orange 50%, lightblue 50%) right;
+    background-size: 200%;
+    transition: .5s ease-out;
+    cursor: pointer;
+    user-select: none;
+}
+.manag-nav-component:hover{
+    background-position: left;
+    
+}
+.manag-nav-component:hover .manag-links{
+
+    display: block;
+}
+.manag-links{
+    background-color: gray;
+    display: none;
+}
+/* Style for dropdown-item */
+.dropbtn:hover {background-position: left;}
+
+.dropbtn {
+    padding: 40px;
+    flex: 0 1 500px;
+    align-self: center;
+    justify-content: center;
+    text-align: center;
+    background-color: orange;
+
+    background: linear-gradient(to left, orange 50%, lightblue 50%) right;
+    background-size: 200%;
+    transition: .5s ease-out;
+    cursor: pointer;
+    user-select: none;
+    font-size: 35px;
+    font-family: 'PT Sans', Arial, Verdana;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+    font-family: 'PT Sans', Arial, Verdana;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    font-family: 'PT Sans', Arial, Verdana;
+    width: 100%;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #ddd;font-family: 'PT Sans', Arial, Verdana;}
+  
+  .dropdown:hover .dropdown-content {display: block;font-family: 'PT Sans', Arial, Verdana;}
+
+
+  .manag-content{
+    display: flex;
+    justify-content: center;
+    height: 300px;
+  }
+.manag-content-component{
+    margin: 5px;
+    margin-top: 15px;
+    padding: 5px;
+    flex: 0 1 auto;
+    background-color:white;
+    width: 700px;
+}
+
+.orders{
+  display:flex;
+  justify-content:center;
+  align-content:center;
+  text-align:center;
+  padding-top:5rem;
+  margin-top: 15px;
+  height: 500px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #ededed;
+}
+
+.order-cards{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.red {
+    background-color:#fa493c;
+}
+
+.green {
+  background-color:#2db504;
+}
+
+.yellow{
+  background-color:#f5b53d;
+}
+.ordercard {
+  margin:10px;
+  height: 450px;
+  width:380px;
+  border-radius:10px;
+  border-top-left-radius: 100px;
+  overflow:hidden;
+  box-shadow:  13px 21px 37px -23px black;
+}
+
+.card-content{
+  height:100%;
+}
+
+.card-content__header {
+  height:25%;
+  text-align:right;
+  padding: 10px;
+  font-size:50px;
+  color:aliceblue;
+}
+
+.card-content__body {
+  height:100%;
+  background-color:aliceblue;
+  padding: 20px;
+  text-align:left;
+  color: black;
+}
+
+.card-status{
+  display:inline-block;
+  text-align:left;
+  font-size:20px;
+  margin-right:25px;
+  font-weight:bolder;
+  vertical-align: baseline;
+  width:40%;
+}
+
+.card-curr {
+  font-size: 15px;
+  font-weight:800;
+  vertical-align: text-top;
+}
+
+.card-curr__frac {
+  font-size:20px;
+}
+
+
+/*.card-content__body-list {
+  text-align:right;
+}
+*/
+
+.card-content__body-button{
+  text-align:center;
+}
+
+.card-content__body-button button {
+  background-color: transparent;
+  border:1px solid #000;
+  border-radius:100px;
+  padding: 10px 20px;
+  transition: ease .5s;
+  outline:none;
+  color: black;
+}
+
+.card-content__body-button button:hover {
+  transform: translate(0,2px);
+}
+
+.card-content__body-button button:active {
+  transform: translate(0,-3px);
+  
+}

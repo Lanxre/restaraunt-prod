@@ -6,6 +6,7 @@ import DeleteButton from '../../../Assets/delete-button.svg';
 import {map} from './map';
 import { fetchTables } from './dbtables';
 import {useState, useEffect, useContext} from 'react';
+import { useNavigate } from 'react-router-dom';
 import {UserContext, UserProvider} from "../../../Api/Context/UserContext";
 import Loader from "../../../Components/Loader/Loader";
 import { toast } from 'wc-toast'
@@ -16,6 +17,8 @@ function Booking(){
     const [imgMap, setImgMap] = useState(null);
     const [tables, setTables] = useState([]);
     const [orderTables, setOrderTables] = useState([]);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
 
@@ -121,7 +124,25 @@ function Booking(){
                         {marginTop:'auto',
                         marginBottom:'5px'}
                     }>
-                        <div className='booking-make-order'>
+                        <div className='booking-make-order'
+                        onClick={() => {
+                            if(orderTables.length > 0 && token){
+                                toast.success('Ваш заказ принят')
+                                setOrderTables([])
+                                sessionStorage.removeItem('sendDish')
+                                sessionStorage.setItem('orderTables', JSON.stringify(orderTables.map(elem => {
+                                    return {
+                                        table_id: elem.name,
+                                        table_price: elem.name < 8 ? 5 : 10
+                                    }
+                                })))
+                                navigate('/order')
+
+                            }
+                            else{
+                                toast.error('Вы не выбрали столики')
+                            }
+                        }} >
                             Заказать
                         </div>
                     </div>
