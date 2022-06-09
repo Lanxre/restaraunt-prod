@@ -211,6 +211,9 @@ class OrderDetailTable(Base):
     user = relationship('User')
 
 
+class News(Base):
+    __tablename__ = 'News'
 
-
-
+    id: int = Column(Integer, primary_key=True)
+    date: str = Column(String)
+    article: str = Column(String)

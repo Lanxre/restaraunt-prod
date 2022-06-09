@@ -178,3 +178,13 @@ class OrderItem(pydantic.BaseModel):
 	details: Optional[pydantic.types.List[dict]] = [{
 		'table_id' : 1,
 	}]
+
+
+
+class NewsScheme(pydantic.BaseModel):
+	id: Optional[int] = None
+	date: Optional[str] = '09-06-2022'
+	article: Optional[str] = 'some news'
+
+	class Config:
+		orm_mode = True

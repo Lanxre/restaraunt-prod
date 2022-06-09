@@ -87,3 +87,14 @@ router_comments = SQLAlchemyCRUDRouter(
     tags=["comments"],
     prefix='/api/comments',
 )
+
+router_news = SQLAlchemyCRUDRouter(
+    schema=NewsScheme,
+    create_schema=NewsScheme,
+    update_schema=NewsScheme,
+    delete_all_route=False,
+    db_model=models.News,
+    db=get_db,
+    tags=["news"],
+    prefix='/api/news',
+)

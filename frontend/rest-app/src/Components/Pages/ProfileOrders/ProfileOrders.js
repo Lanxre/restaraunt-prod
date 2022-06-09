@@ -42,6 +42,7 @@ export default function  ProfileOrders(){
         })
         await getUserNotConfirmOrdersTable(token).then(data => {
             if(data.detail !==  'Order detail not found'){
+                console.log(data)
                 setNotCofirmTableOrder(data)
             }
         })

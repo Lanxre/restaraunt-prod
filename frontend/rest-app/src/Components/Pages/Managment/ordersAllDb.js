@@ -16,8 +16,42 @@ const notConfirmDishOrder = async () => {
 }
 
 
+const monthSaleStatsOrder = async (token) => {
+    return await fetch('http://localhost:8000/api/statistics/sales', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + token,
+        }}).then(res => res.json())
+
+}
+
+const monthBookingStatsOrder = async (token) => {
+    return await fetch('http://localhost:8000/api/statistics/booking', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + token,
+        }}).then(res => res.json())
+
+}
+
+const monthOrderStatsOrder = async (token) => {
+    return await fetch('http://localhost:8000/api/statistics/order', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + token,
+        }}).then(res => res.json())
+}
+
+
 
 export {
     notConfirmTableOrder,
-    notConfirmDishOrder
+    notConfirmDishOrder,
+
+    monthSaleStatsOrder,
+    monthBookingStatsOrder,
+    monthOrderStatsOrder,
 }

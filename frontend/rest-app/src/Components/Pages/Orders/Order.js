@@ -62,7 +62,7 @@ export default function Order(){
                 <div className="order-total">
                     <span className="total-title">Всего:</span>
                     <span className="total-price">${orderTables.reduce( (last, current) =>
-                        last + Number(current['table_price']), 0)}
+                        last + Number(current['table_price']) * (current['quantity'] ? current['quantity'] : 1), 0)}
                     </span>
                 </div>
                 <div>
@@ -83,7 +83,7 @@ export default function Order(){
                                     },
                                     body: JSON.stringify({
                                         price: Number(orderTables.reduce( (last, current) =>
-                                        last + Number(current['table_price']), 0)),
+                                        last + Number(current['table_price']) * (current['quantity'] ? current['quantity'] : 1), 0)),
                                         date: today(),
                                         status: 'Ожидание подтверждения',
                                     })
@@ -108,7 +108,8 @@ export default function Order(){
 
                                         )
                                     })
-                                    navigate('profile/my-order')
+                                    sessionStorage.removeItem('orderTables')
+                                    navigate('/profile/my-order')
                                 })
                             }
                         }
@@ -170,7 +171,7 @@ export default function Order(){
                                 gridRow: `${index + 1} / ${index + 2}`,
                                 gridColumn: '4 / 4',
                                 transform: 'scale(1.2) skewy(-7deg) skewx(-5deg)'
-                            }}>{elem.price} $</h3>
+                            }}>{elem.price * elem.quantity} $</h3>
                         )
                     })}
                     {orderDishes.map((elem, index) => {
@@ -186,7 +187,7 @@ export default function Order(){
                         gridColumn: '4 / 4',
                         gridRow: '17 / 18',
                     }}>{orderDishes.reduce( (last, current) =>
-                        last + Number(current['price']), 0)} $</h3>
+                        last + Number(current['price']) * (current['quantity'] ? current['quantity'] : 1), 0)} $</h3>
                 </div>
 
                 <div className="order-list grid-lines">
@@ -292,7 +293,7 @@ export default function Order(){
                                     },
                                     body: JSON.stringify({
                                         price: Number(orderDishes.reduce( (last, current) =>
-                                        last + Number(current['price']), 0)),
+                                        last + Number(current['price']) * (current['quantity'] ? current['quantity'] : 1), 0)),
                                         date: today(),
                                         status: 'Ожидание подтверждения',
                                     })
@@ -320,7 +321,8 @@ export default function Order(){
 
                                         )
                                     })
-                                    navigate('profile/my-order')
+                                    sessionStorage.removeItem('sendDish')
+                                    navigate('/profile/my-order')
                                 })
                             }
                         }

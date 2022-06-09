@@ -206,8 +206,28 @@ async def get_comments_by_user(
     return await get_comments_user(db, int(user.user_id))
 
 
+@app.get("/api/statistics/sales", tags=["statistics"],
+                                  response_model=StatisticsScheme)
+async def get_statistics_sales(
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_sales_statistics(db)
+
+@app.get("/api/statistics/booking", tags=["statistics"])
+async def get_statistics_booking(
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_booking_statistics(db)
 
 
+@app.get("/api/statistics/order", tags=["statistics"])
+async def get_statistics_order(
+    user: User = Depends(get_current_user),
+    db: orm.Session = Depends(get_db)
+):
+    return await get_order_statistics(db)
 
 
 app.include_router(router_manager, dependencies=[Depends(get_current_user)])
@@ -218,3 +238,4 @@ app.include_router(router_tables)
 app.include_router(router_dishes)
 app.include_router(router_orders, dependencies=[Depends(get_current_user)])
 app.include_router(router_comments, dependencies=[Depends(get_current_user)])
+app.include_router(router_news)

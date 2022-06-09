@@ -80,7 +80,7 @@ async def get_not_confirmed_order_menu_by_user_id(db, user_id: int):
 				"dish_name": db.query(models.Dish).filter(models.Dish.type == detail.dish_type)[detail.dish_id].name,
 				'quantity': detail.quantity,
 				'total_price': detail.total_price,
-			} for detail in order_menu]
+			} for detail in db.query(models.OrderDetailMenu).filter(models.OrderDetailMenu.order_id == unique_list_order_id[i])]
 		}
 		i += 1
 		order_list_send.append(order_send)
@@ -137,7 +137,7 @@ async def get_confirmed_order_menu_by_user_id(db, user_id: int):
 				"dish_name": db.query(models.Dish).filter(models.Dish.type == detail.dish_type)[detail.dish_id].name,
 				'quantity': detail.quantity,
 				'total_price': detail.total_price,
-			} for detail in order_menu]
+			} for detail in db.query(models.OrderDetailMenu).filter(models.OrderDetailMenu.order_id == unique_list_order_id[i])]
 		}
 		i += 1
 		order_list_send.append(order_send)
@@ -148,12 +148,13 @@ async def get_confirmed_order_menu_by_user_id(db, user_id: int):
 
 async def get_order_table_details_not_confirm(db, user_id: int):
 	order_table_details = db.query(models.OrderDetailTable).filter(models.OrderDetailTable.user_id == user_id,
-	                                                     models.OrderDetailMenu.manager_id == None,
-	                                                     models.OrderDetailMenu.sale_person_id == None)
+	                                                     models.OrderDetailTable.manager_id == None,
+	                                                     models.OrderDetailTable.sale_person_id == None)
 
 	if order_table_details is None:
 		raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
-
+	
+	
 	unique_list_order_id = set()
 	[unique_list_order_id.add(obj.order_id) for obj in order_table_details if obj.order_id not in order_table_details]
 	unique_list_order_id = list(unique_list_order_id)
@@ -179,8 +180,8 @@ async def get_order_table_details_not_confirm(db, user_id: int):
 			"date": order_info.date,
 			"price": order_info.price,
 			"details": [{
-				"table_id": db.query(models.Table).filter(models.Table.table_id == detail.table_id).first().table_id,
-			} for detail in order_table_details]
+				"table_id": detail.table_id,
+			} for detail in db.query(models.OrderDetailTable).filter(models.OrderDetailTable.order_id == unique_list_order_id[i])]
 		}
 		i += 1
 		order_list_send.append(order_send)
@@ -229,8 +230,8 @@ async def get_order_table_details_confirm(db, user_id: int):
 			"manager": manager.FirstName + ' ' + manager.LastName,
 			"sale_person": sale_person.FirstName + ' ' + sale_person.LastName,
 			"details": [{
-				"table_id": db.query(models.Table).filter(models.Table.table_id == detail.table_id).first().table_id,
-			} for detail in order_table_details]
+				"table_id": detail.table_id,
+			} for detail in db.query(models.OrderDetailTable).filter(models.OrderDetailTable.order_id == unique_list_order_id[i])]
 		}
 		i += 1
 		order_list_send.append(order_send)

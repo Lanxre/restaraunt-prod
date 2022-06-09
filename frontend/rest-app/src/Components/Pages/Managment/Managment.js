@@ -1,11 +1,72 @@
 import './Managment.css';
 import { useState, useEffect, useContext } from 'react';
-import { notConfirmTableOrder, notConfirmDishOrder } from './ordersAllDb';
+import { 
+    notConfirmTableOrder, 
+    notConfirmDishOrder, 
+    monthSaleStatsOrder,
+    monthBookingStatsOrder,
+    monthOrderStatsOrder
+} from './ordersAllDb';
 import { useNavigate } from 'react-router-dom';
 import {fetchUser} from '../../../Api/http/userRequests';
 import {UserContext, UserProvider} from "../../../Api/Context/UserContext";
 import Stats from "../../../Assets/statistics.png";
 import  PoccesingCard  from './proccesingCard';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    PointElement,
+    LinearScale,
+    BarElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+import { Bar, Line } from 'react-chartjs-2';
+  
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+  );
+  
+export const options = {
+responsive: true,
+plugins: {
+    legend: {
+    position: 'top'
+    },
+    title: {
+    display: true,
+    text: 'Статистика ресторана Lanore',
+    },
+},
+};
+const labels = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+  
+export const dataClients = {
+    labels,
+    datasets: [
+        {
+            label: 'Общее количество заказов',
+            data: [],
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+        {
+            label: 'Выполненные заказы',
+            data: [],
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        }
+    ],
+};
 
 
 export default function Managment() {
@@ -37,6 +98,7 @@ export default function Managment() {
                 }
             })
             setLoading(true)
+            
         }
         if(!token) {
             navigate('/')
@@ -51,7 +113,7 @@ export default function Managment() {
                     <div className="dropbtn"> Заказы</div>
                     <div className="dropdown-content">
                         <a href="#">Все заказы</a>
-                        <a onClick={() =>{
+                        <a style={{cursor: "pointer"}} onClick={() =>{
                             setJsxOrders(true)
                             setStats(false)
                         }}>На рассмотрение</a>
@@ -63,12 +125,69 @@ export default function Managment() {
                 <div className="dropdown">
                     <div className="dropbtn"> Статистика</div>
                     <div className="dropdown-content">
-                        <a onClick={() => {
-                             setJsxOrders(false)
-                            setStats(<img src={Stats}/>)
+                        <a style={{cursor: "pointer"}} onClick={async () => {
+                            setJsxOrders(false)
+                            setStats()
+                            await monthOrderStatsOrder(token).then(data => {
+                                dataClients.datasets[0].data = []
+                                dataClients.datasets[0].label = 'Количество выполненных заказов'
+                                dataClients.datasets[1].data = []
+                                dataClients.datasets[1].label = ''
+                                
+                                for(const month_key in data.total_orders_stats){
+                                    if(month_key <= new Date().getMonth() + 1){
+                                        dataClients.datasets[0].data.push(data.total_orders_stats[month_key])
+                                    }
+                                }
+                            
+                            })
+                            setStats(<Line style={{width: '100%', height: '500px'}}
+                                               options={options}
+                                               data={dataClients} />)
                         }} >Продажи</a>
-                        <a href="#">Бронь</a>
-                        <a href="#">Заказы</a>
+                        <a style={{cursor: "pointer"}} onClick={async () => {
+
+                            setJsxOrders(false)
+                            setStats()
+                            await monthBookingStatsOrder(token).then(data => {
+                                dataClients.datasets[0].data = []
+                                dataClients.datasets[0].label = 'Количество обслужанных столов'
+                                dataClients.datasets[1].data = []
+                                dataClients.datasets[1].label = ''
+                                
+                                for(const month_key in data.total_booking_stats){
+                                    if(month_key <= new Date().getMonth() + 1){
+                                        
+                                        dataClients.datasets[0].data.push(data.total_booking_stats[month_key])
+                                    }
+                                }
+                                
+                            })
+                            setStats(<Line style={{width: '100%', height: '500px'}}
+                                options={options}
+                                data={dataClients} />)
+
+                        }}>Бронь</a>
+                        <a style={{cursor: "pointer"}} onClick={async () => {
+                            setJsxOrders(false)
+                            setStats()
+                            await monthSaleStatsOrder(token).then(data => {
+                                dataClients.datasets[0].data = []
+                                dataClients.datasets[0].label = 'Общее количество заказов'
+                                dataClients.datasets[1].data = []
+                                dataClients.datasets[1].label = 'Выполненные заказы'
+                            
+                                for(const month_key in data.total_sales_stats){
+                                    if(month_key <= new Date().getMonth() + 1){
+                                        dataClients.datasets[0].data.push(data.total_sales_stats[month_key])
+                                        dataClients.datasets[1].data.push(data.total_confirmed_sales_stats[month_key])
+                                    }
+                                }
+                            })
+                            setStats(<Bar style={{width: '100%', height: '500px'}}
+                                           options={options}
+                                           data={dataClients} />)
+                        }}>Заказы</a>
                     </div>
                     </div>
                 
