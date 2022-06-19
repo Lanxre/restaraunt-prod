@@ -18,6 +18,7 @@ class TableSchemeCreate(pydantic.BaseModel):
 
 
 class DishScheme(pydantic.BaseModel):
+	id: Optional[int] = None
 	menu_id: Optional[str] = None
 	name: Optional[str] = None
 	description: Optional[str] = None

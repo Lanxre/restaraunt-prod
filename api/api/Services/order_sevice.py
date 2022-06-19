@@ -191,8 +191,8 @@ async def get_order_table_details_not_confirm(db, user_id: int):
 
 async def get_order_table_details_confirm(db, user_id: int):
 	order_table_details = db.query(models.OrderDetailTable).filter(models.OrderDetailTable.user_id == user_id,
-	                                                     models.OrderDetailMenu.manager_id != None,
-	                                                     models.OrderDetailMenu.sale_person_id != None)
+	                                                               models.OrderDetailTable.manager_id != None,
+	                                                               models.OrderDetailTable.sale_person_id != None)
 
 	if order_table_details is None:
 		raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
@@ -205,7 +205,8 @@ async def get_order_table_details_confirm(db, user_id: int):
 	for order_id in unique_list_order_id:
 		order_info = db.query(models.Order).filter(models.Order.id == order_id,
 		                                           models.Order.status == 'Потверждено').first()
-		order_list_info.append(order_info)
+		if order_info is not None:
+			order_list_info.append(order_info)
 
 	if order_list_info is None:
 		raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order detail not found")
@@ -282,7 +283,7 @@ async def get_not_confirmed_order_menu(db):
 				"dish_name": db.query(models.Dish).filter(models.Dish.type == detail.dish_type)[detail.dish_id].name,
 				'quantity': detail.quantity,
 				'total_price': detail.total_price,
-			} for detail in order_menu]
+			} for detail in db.query(models.OrderDetailMenu).filter(models.OrderDetailMenu.order_id == unique_list_order_id[i])]
 		}
 		i += 1
 		order_list_send.append(order_send)
@@ -324,7 +325,7 @@ async def get_order_table_details_not_confirm_all(db):
 			"price": order_info.price,
 			"details": [{
 				"table_id": db.query(models.Table).filter(models.Table.table_id == detail.table_id).first().table_id,
-			} for detail in order_table_details]
+			} for detail in db.query(models.OrderDetailTable).filter(models.OrderDetailTable.order_id == unique_list_order_id[i])]
 		}
 		i += 1
 		order_list_send.append(order_send)
